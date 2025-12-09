@@ -127,6 +127,11 @@ func (m RevealModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		// Check if done
 		if m.currentStep >= m.totalSteps {
+			// Ensure all characters are fully revealed
+			for i := range m.chars {
+				m.chars[i].Revealed = true
+				m.chars[i].Current = m.chars[i].Target
+			}
 			m.done = true
 			// Don't auto-quit, let the password stay visible
 			return m, nil
