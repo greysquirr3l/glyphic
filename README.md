@@ -1,5 +1,7 @@
 # 🔐 Glyphic
 
+![Glyphic Logo](docs/assets/glyphic-logo.png)
+
 **Glyphic** is a quantum-resistant Diceware password generator built in Go 1.25.5, featuring a distinctive Matrix-style "decode" reveal animation using sci-fi glyphs.
 
 [![Go Version](https://img.shields.io/badge/Go-1.25.5-00ADD8?logo=go)](https://go.dev/)
@@ -8,7 +10,7 @@
 
 Generate memorable, cryptographically secure passphrases with beautiful terminal animations.
 
-```
+```bash
 $ glyphic
 [Matrix-style decode animation reveals:]
 Outsell-Uncut-Degree-Upstart-Mocha-Systemize
@@ -17,6 +19,7 @@ Outsell-Uncut-Degree-Upstart-Mocha-Systemize
 ## ✨ Features
 
 ### 🔒 Security-First Design
+
 - **Cryptographic randomness**: `crypto/rand` only (NEVER `math/rand`)
 - **Secure memory handling**: `mlock()` prevents swapping to disk
 - **Zero persistence**: No password storage, immediate memory clearing
@@ -25,6 +28,7 @@ Outsell-Uncut-Degree-Upstart-Mocha-Systemize
 - **81+ bits entropy** (default 6 words)
 
 ### 🎨 Terminal Experience
+
 - **Matrix decode animation**: Sci-fi glyph scramble reveal
 - **7 color schemes**: matrix, cyber, fire, vapor, mono, nord, gruvbox
 - **Terminal detection**: Graceful degradation (xterm-256color → UTF-8 → ASCII)
@@ -32,6 +36,7 @@ Outsell-Uncut-Degree-Upstart-Mocha-Systemize
 - **3 animation speeds**: slow, normal, fast
 
 ### 🎲 Password Generation
+
 - **Diceware wordlists**: EFF wordlists (auto-fetched via HTTPS)
 - **Multi-wordlist selection**: Draws from ≥3 different lists
 - **Exclusion lists**: Built-in profanity/confusing word filtering
@@ -39,6 +44,7 @@ Outsell-Uncut-Degree-Upstart-Mocha-Systemize
 - **Batch generation**: Up to 1 billion passwords
 
 ### 🧰 Advanced Options
+
 - **Custom wordlists**: Add your own word lists
 - **Exclusion control**: Disable or add custom exclusions
 - **Entropy display**: See cryptographic strength
@@ -48,6 +54,7 @@ Outsell-Uncut-Degree-Upstart-Mocha-Systemize
 ## 📦 Installation
 
 ### From Source
+
 ```bash
 # Requires Go 1.25.5+
 git clone https://github.com/greysquirr3l/glyphic.git
@@ -57,6 +64,7 @@ sudo make install
 ```
 
 ### From Release Binary
+
 ```bash
 # Download latest release
 curl -LO https://github.com/greysquirr3l/glyphic/releases/latest/download/glyphic-$(uname -s)-$(uname -m).tar.gz
@@ -65,6 +73,7 @@ sudo install glyphic /usr/local/bin/
 ```
 
 ### Verify Installation
+
 ```bash
 glyphic --version
 ```
@@ -72,26 +81,31 @@ glyphic --version
 ## 🚀 Quick Start
 
 ### Generate a password (with animation)
+
 ```bash
 glyphic
 ```
 
 ### Generate 5 passwords (no animation)
+
 ```bash
 glyphic --count 5 --no-reveal
 ```
 
 ### Generate with numbers and special chars
+
 ```bash
 glyphic --numbers --special
 ```
 
 ### Generate ALL-CAPS password
+
 ```bash
 glyphic --capitalize all
 ```
 
 ### Show entropy calculation
+
 ```bash
 glyphic --entropy
 ```
@@ -99,6 +113,7 @@ glyphic --entropy
 ## 📖 Usage Examples
 
 ### Basic Generation
+
 ```bash
 # Default: 6 words, first-letter caps, dash separator
 glyphic
@@ -111,6 +126,7 @@ glyphic --words 4 --separator space
 ```
 
 ### Capitalization Modes
+
 ```bash
 --capitalize none          # alllowercase
 --capitalize first         # First-Letter-Caps (default)
@@ -120,6 +136,7 @@ glyphic --words 4 --separator space
 ```
 
 ### Numbers and Special Characters
+
 ```bash
 # Add 2 random digits at end
 glyphic --numbers
@@ -132,6 +149,7 @@ glyphic --numbers --number-count 4 --special --special-count 2
 ```
 
 ### Separator Options
+
 ```bash
 --separator none        # wordwordword
 --separator space       # word word word
@@ -141,6 +159,7 @@ glyphic --numbers --number-count 4 --special --special-count 2
 ```
 
 ### Color Schemes and Animation
+
 ```bash
 # Cyberpunk neon blue
 glyphic --color cyber
@@ -155,6 +174,7 @@ glyphic --color mono --speed slow
 ```
 
 ### Batch Generation
+
 ```bash
 # Generate 100 passwords
 glyphic --count 100 --no-reveal > passwords.txt
@@ -164,6 +184,7 @@ glyphic --count 1000000 --no-reveal --quiet
 ```
 
 ### Advanced Wordlist Control
+
 ```bash
 # Use custom wordlist
 glyphic --wordlist ~/my-wordlist.txt
@@ -184,7 +205,9 @@ glyphic --no-exclusions
 ## 🔐 Security Details
 
 ### Cryptographic Randomness
+
 Glyphic uses **only** `crypto/rand` for all random operations:
+
 - Word selection from wordlists
 - Number generation
 - Special character selection
@@ -193,23 +216,28 @@ Glyphic uses **only** `crypto/rand` for all random operations:
 The PRNG is validated on startup. If `crypto/rand` fails, the application exits immediately.
 
 ### Memory Safety
+
 - **Memory locking**: Uses `unix.Mlock()` to prevent sensitive data from swapping to disk
 - **Secure zeroing**: All password buffers are zeroed immediately after use with `runtime.KeepAlive()`
 - **No persistence**: Passwords are never written to disk or logs
 - **Buffer overflow protection**: Canary tokens detect memory corruption
 
 ### Entropy Calculation
+
 Default configuration (6 words, dash separator):
+
 - **Word entropy**: 6 words × log₂(7776) ≈ 77.5 bits
 - **With 2 numbers**: +6.6 bits = 84.1 bits
 - **With 1 special char**: +4.6 bits = 88.7 bits
 
 For reference:
+
 - **64 bits**: Uncrackable by brute force with current technology
 - **77 bits**: Secure against quantum computers (Grover's algorithm)
 - **128 bits**: Overkill for most purposes
 
 ### Wordlist Security
+
 - **Auto-fetching**: Downloads from verified HTTPS sources (EFF)
 - **SHA-256 verification**: Checksums validated before use
 - **Local caching**: Stored in `~/.local/share/glyphic/wordlists/`
@@ -231,7 +259,8 @@ For reference:
 ## 📁 File Locations
 
 ### Wordlist Cache
-```
+
+```bash
 ~/.local/share/glyphic/wordlists/
 ├── eff-large.txt          (7776 words)
 ├── eff-short-1.txt        (1296 words)
@@ -239,7 +268,8 @@ For reference:
 ```
 
 ### Exclusion Lists (embedded in binary)
-```
+
+```bash
 internal/wordlist/exclusions/
 ├── confusing.txt          (homophones: one/won, two/to/too)
 ├── profanity.txt          (basic profanity)
@@ -250,10 +280,12 @@ internal/wordlist/exclusions/
 ## 🛠️ Development
 
 ### Prerequisites
+
 - Go 1.25.5+ (leverages latest iter.Seq, slices, maps packages)
 - Make (optional, for convenience)
 
 ### Build from Source
+
 ```bash
 git clone https://github.com/greysquirr3l/glyphic.git
 cd glyphic
@@ -261,6 +293,7 @@ make build
 ```
 
 ### Run Tests
+
 ```bash
 make test              # Run all tests
 make test-coverage     # Run with coverage report
@@ -268,6 +301,7 @@ make bench             # Run benchmarks
 ```
 
 ### Code Quality
+
 ```bash
 make fmt               # Format code
 make lint              # Run golangci-lint
@@ -276,7 +310,8 @@ make check             # Run all quality checks
 ```
 
 ### Project Structure
-```
+
+```text
 glyphic/
 ├── cmd/glyphic/           # CLI entry point
 ├── internal/
@@ -296,6 +331,7 @@ glyphic/
 ## 🧪 Testing
 
 ### Test Coverage
+
 - **Unit tests**: All packages have comprehensive test coverage
 - **Table-driven tests**: Exhaustive scenario coverage
 - **Benchmarks**: Performance regression detection
@@ -315,13 +351,15 @@ go test -fuzz=FuzzGeneratePassword -fuzztime=30s ./internal/generator
 ## 📊 Performance
 
 ### Benchmarks (Apple M1, Go 1.25.5)
-```
+
+```text
 BenchmarkGenerateSingle-8           5000    230 µs/op    8 allocs/op
 BenchmarkGenerate100-8                50     23 ms/op  800 allocs/op
 BenchmarkSelectRandomGlyph-8    10000000    120 ns/op    0 allocs/op
 ```
 
 ### Scalability
+
 - **Single password**: ~230 microseconds
 - **1,000 passwords**: ~23 milliseconds
 - **1,000,000 passwords**: ~23 seconds
@@ -332,6 +370,7 @@ BenchmarkSelectRandomGlyph-8    10000000    120 ns/op    0 allocs/op
 Contributions welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ### Areas for Contribution
+
 - Additional color schemes
 - More wordlist sources
 - i18n support (internationalization)
@@ -345,9 +384,9 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## 🙏 Acknowledgments
 
-- **EFF**: Diceware wordlists (https://www.eff.org/dice)
-- **Charmbracelet**: Bubble Tea and Lip Gloss (https://charm.sh)
-- **Matrix Code NFI**: Font inspiration (https://www.norfok.com/matrix-code-nfi)
+- **EFF**: Diceware wordlists (<https://www.eff.org/dice>)
+- **Charmbracelet**: Bubble Tea and Lip Gloss (<https://charm.sh>)
+- **Matrix Code NFI**: Font inspiration (<https://www.norfok.com/matrix-code-nfi>)
 
 ## 🔗 Related Projects
 
@@ -362,5 +401,3 @@ MIT License - see [LICENSE](LICENSE) for details.
 - **Security**: See [SECURITY.md](SECURITY.md) for vulnerability reporting
 
 ---
-
-**Made with ❤️ by greysquirr3l • Built with Go 1.25.5 • Powered by crypto/rand**
