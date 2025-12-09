@@ -117,7 +117,7 @@ func (m RevealModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case tickMsg:
 		if m.done {
-			return m, tea.Quit
+			return m, nil
 		}
 
 		m.currentStep++
@@ -128,7 +128,8 @@ func (m RevealModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// Check if done
 		if m.currentStep >= m.totalSteps {
 			m.done = true
-			return m, tea.Quit
+			// Don't auto-quit, let the password stay visible
+			return m, nil
 		}
 
 		return m, tick(m.opts.Speed)
@@ -240,13 +241,15 @@ func (m RevealModel) View() string {
 			Render(entropyInfo)
 	}
 
-	// Add help text if not done
+	// Add help text
+	result += "\n\n"
+	helpStyle := lipgloss.NewStyle().
+		Foreground(lipgloss.Color("#666666")).
+		Italic(true)
 	if !m.done {
-		result += "\n\n"
-		helpStyle := lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#666666")).
-			Italic(true)
 		result += helpStyle.Render("Press SPACE to skip • ESC to quit")
+	} else {
+		result += helpStyle.Render("Press q or ESC to exit")
 	}
 
 	// Center vertically

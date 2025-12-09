@@ -106,7 +106,8 @@ func TestRevealModelUpdate(t *testing.T) {
 		newModel, cmd := model.Update(tickMsg{})
 		m := newModel.(RevealModel)
 		assert.True(t, m.done)
-		assert.NotNil(t, cmd) // Should have quit command
+		// Should not auto-quit, password stays visible
+		assert.Nil(t, cmd)
 	})
 
 	t.Run("quit key exits", func(t *testing.T) {
