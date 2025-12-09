@@ -7,7 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2025-12-09
+
 ### Added
+
 - Comprehensive test suite for `internal/security` package (74.3% coverage)
 - Comprehensive test suite for `internal/tui` package (74.3% coverage)
 - CONTRIBUTING.md with detailed contribution guidelines
@@ -16,16 +19,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Benchmarks for security and TUI performance
 
 ### Fixed
+
 - `SecureRandomFloat()` now correctly returns values in [0.0, 1.0) range
-- Improved test coverage from 46.4% to 66.4% overall
+- Password persistence: TUI now stays visible until user exits with q/ESC
+- Glyphs no longer appear in final password after animation completes
+- All characters properly revealed when animation finishes naturally
 
 ### Changed
-- Enhanced test coverage across all critical security paths
+
+- Enhanced test coverage from 54.4% to 66.4% overall
 - Improved documentation for contributors
+- TUI help text updated to show appropriate exit instructions
 
 ## [0.1.0] - 2025-12-09
 
 ### Added
+
 - Initial release of glyphic password generator
 - Quantum-resistant Diceware password generation
 - Matrix Code NFI font integration with 500+ glyphs
@@ -50,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - MIT License
 
 ### Security
+
 - Uses crypto/rand exclusively for all randomness
 - Memory locking prevents swapping sensitive data to disk
 - Secure zeroing of password buffers with runtime.KeepAlive
@@ -57,5 +67,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - No password persistence or logging
 - HTTPS-only for wordlist downloads
 
-[Unreleased]: https://github.com/greysquirr3l/glyphic/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/greysquirr3l/glyphic/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/greysquirr3l/glyphic/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/greysquirr3l/glyphic/releases/tag/v0.1.0

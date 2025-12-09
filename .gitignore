@@ -1,5 +1,6 @@
 # Binaries
 glyphic
+bin/
 *.exe
 *.exe~
 *.dll
@@ -37,3 +38,6 @@ build/
 
 # Local cache
 .cache/
+
+# Serena
+.serena/
