@@ -1,3 +1,5 @@
+// Package generator provides password generation logic using Diceware methodology
+// with cryptographic randomness and configurable options.
 package generator
 
 import (
@@ -14,6 +16,7 @@ import (
 // CapitalizationMode defines how words should be capitalized
 type CapitalizationMode int
 
+// Capitalization mode constants define various word capitalization strategies.
 const (
 	CapNone        CapitalizationMode = iota // no capitalization
 	CapFirst                                 // capitalize first letter of each word
@@ -25,6 +28,7 @@ const (
 // SeparatorMode defines how words should be separated
 type SeparatorMode int
 
+// Separator mode constants define various word separation strategies.
 const (
 	SepNone       SeparatorMode = iota // no separator
 	SepSpace                           // space between words
@@ -61,7 +65,9 @@ var DefaultOptions = Options{
 // SpecialChars is the set of allowed special characters
 var SpecialChars = []rune{'!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '=', '+', '[', ']', '{', '}', '|', ';', ':', ',', '.', '?'}
 
+// Generator error types
 var (
+	// ErrInvalidWordCount indicates word count is out of valid range
 	ErrInvalidWordCount    = errors.New("word count must be between 3 and 12")
 	ErrInvalidNumberCount  = errors.New("number count must be between 1 and 4")
 	ErrInvalidSpecialCount = errors.New("special character count must be between 1 and 4")
@@ -215,7 +221,7 @@ func applyCapitalization(words []string, mode CapitalizationMode) ([]string, err
 				// 50% chance to capitalize each character
 				shouldCap, err := security.SecureRandomIndex(2)
 				if err != nil {
-					return nil, err
+					return nil, fmt.Errorf("failed to randomize capitalization: %w", err)
 				}
 				if shouldCap == 1 {
 					runes[j] = []rune(strings.ToUpper(string(runes[j])))[0]
@@ -265,7 +271,7 @@ func generateRandomNumbers(count int) (string, error) {
 	for range count {
 		digit, err := security.SecureRandomIndex(10)
 		if err != nil {
-			return "", err
+			return "", fmt.Errorf("failed to generate random digit: %w", err)
 		}
 		sb.WriteString(strconv.Itoa(digit))
 	}
@@ -278,7 +284,7 @@ func generateRandomSpecialChars(count int) (string, error) {
 	for range count {
 		idx, err := security.SecureRandomIndex(len(SpecialChars))
 		if err != nil {
-			return "", err
+			return "", fmt.Errorf("failed to select random special char: %w", err)
 		}
 		sb.WriteRune(SpecialChars[idx])
 	}
@@ -294,7 +300,7 @@ func (g *Generator) EstimateEntropy(opts Options) (float64, error) {
 	// Get average wordlist size
 	lists, err := g.manager.SelectRandomLists(opts.MinWordlists)
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("failed to select random wordlists: %w", err)
 	}
 
 	var totalWords int

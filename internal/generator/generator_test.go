@@ -212,6 +212,7 @@ func TestCapitalizationModes(t *testing.T) {
 			name: "CapNone",
 			mode: CapNone,
 			check: func(t *testing.T, password string) {
+				t.Helper()
 				words := strings.Split(password, "-")
 				for _, word := range words {
 					assert.Equal(t, strings.ToLower(word), word)
@@ -222,6 +223,7 @@ func TestCapitalizationModes(t *testing.T) {
 			name: "CapFirst",
 			mode: CapFirst,
 			check: func(t *testing.T, password string) {
+				t.Helper()
 				words := strings.Split(password, "-")
 				for _, word := range words {
 					if len(word) > 0 {
@@ -234,6 +236,7 @@ func TestCapitalizationModes(t *testing.T) {
 			name: "CapAll",
 			mode: CapAll,
 			check: func(t *testing.T, password string) {
+				t.Helper()
 				words := strings.Split(password, "-")
 				for _, word := range words {
 					assert.Equal(t, strings.ToUpper(word), word)
@@ -415,6 +418,7 @@ func TestApplyCapitalization(t *testing.T) {
 			name: "CapNone",
 			mode: CapNone,
 			check: func(t *testing.T, result []string) {
+				t.Helper()
 				for _, word := range result {
 					assert.Equal(t, strings.ToLower(word), word)
 				}
@@ -424,6 +428,7 @@ func TestApplyCapitalization(t *testing.T) {
 			name: "CapFirst",
 			mode: CapFirst,
 			check: func(t *testing.T, result []string) {
+				t.Helper()
 				assert.Equal(t, "Hello", result[0])
 				assert.Equal(t, "World", result[1])
 				assert.Equal(t, "Test", result[2])
@@ -433,6 +438,7 @@ func TestApplyCapitalization(t *testing.T) {
 			name: "CapAll",
 			mode: CapAll,
 			check: func(t *testing.T, result []string) {
+				t.Helper()
 				assert.Equal(t, "HELLO", result[0])
 				assert.Equal(t, "WORLD", result[1])
 				assert.Equal(t, "TEST", result[2])
@@ -442,6 +448,7 @@ func TestApplyCapitalization(t *testing.T) {
 			name: "CapAlternating",
 			mode: CapAlternating,
 			check: func(t *testing.T, result []string) {
+				t.Helper()
 				assert.Equal(t, "HELLO", result[0])
 				assert.Equal(t, "world", result[1])
 				assert.Equal(t, "TEST", result[2])

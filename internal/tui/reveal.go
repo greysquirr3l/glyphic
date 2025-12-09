@@ -14,10 +14,11 @@ import (
 // Speed defines animation speed presets
 type Speed int
 
+// Animation speed constants define the milliseconds per frame for different speeds.
 const (
 	SpeedSlow   Speed = 150 // milliseconds per frame
-	SpeedNormal Speed = 75
-	SpeedFast   Speed = 30
+	SpeedNormal Speed = 75  // Default animation speed
+	SpeedFast   Speed = 30  // Fast animation speed
 )
 
 // RevealOptions configures the reveal animation

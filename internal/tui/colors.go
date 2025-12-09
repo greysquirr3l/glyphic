@@ -1,3 +1,4 @@
+// Package tui provides Bubble Tea terminal UI components for glyphic.
 package tui
 
 import "github.com/charmbracelet/lipgloss"

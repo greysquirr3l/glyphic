@@ -4,6 +4,7 @@ package wordlist
 import (
 	"bufio"
 	"embed"
+	"fmt"
 	"os"
 	"slices"
 	"strings"
@@ -62,9 +63,9 @@ func loadDefaultExclusions() []string {
 
 // LoadFile loads exclusions from a file
 func (e *ExclusionList) LoadFile(path string) error {
-	file, err := os.Open(path)
+	file, err := os.Open(path) // #nosec G304 - path comes from CLI flags, user controlled
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to open exclusion file %s: %w", path, err)
 	}
 	defer func() { _ = file.Close() }()
 
@@ -83,7 +84,10 @@ func (e *ExclusionList) LoadFile(path string) error {
 	slices.Sort(e.words)
 	e.words = slices.Compact(e.words)
 
-	return scanner.Err()
+	if err := scanner.Err(); err != nil {
+		return fmt.Errorf("failed to scan exclusion file %s: %w", path, err)
+	}
+	return nil
 }
 
 // Add adds words to the exclusion list

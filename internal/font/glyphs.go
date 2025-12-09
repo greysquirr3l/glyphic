@@ -1,6 +1,9 @@
+// Package font provides Matrix Code NFI font glyphs and terminal capability detection
+// for the glyphic password reveal animation.
 package font
 
 import (
+	"fmt"
 	"unicode"
 	"unicode/utf8"
 
@@ -10,6 +13,7 @@ import (
 // TerminalMode represents terminal capability levels
 type TerminalMode int
 
+// Terminal capability constants for graceful glyph degradation.
 const (
 	TerminalDumb  TerminalMode = iota // ASCII fallback (33-126)
 	TerminalBasic                     // Basic UTF-8 (Latin + basic symbols)
@@ -139,7 +143,7 @@ func (g *GlyphSet) SelectRandomGlyph() (rune, error) {
 
 	idx, err := security.SecureRandomIndex(len(g.Glyphs))
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("failed to select random glyph: %w", err)
 	}
 
 	return g.Glyphs[idx], nil

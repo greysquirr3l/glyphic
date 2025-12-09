@@ -26,30 +26,30 @@ var (
 	ErrMemoryUnlockFailed = errors.New("failed to unlock memory")
 )
 
-// SecureRandomIndex returns a cryptographically secure random index in the range [0, max).
+// SecureRandomIndex returns a cryptographically secure random index in the range [0, maxVal).
 // It uses crypto/rand and avoids modulo bias.
-func SecureRandomIndex(max int) (int, error) {
-	if max <= 0 {
+func SecureRandomIndex(maxVal int) (int, error) {
+	if maxVal <= 0 {
 		return 0, ErrInvalidRange
 	}
 
 	// For small ranges, use simple approach
-	if max <= 256 {
+	if maxVal <= 256 {
 		var buf [1]byte
 		if _, err := rand.Read(buf[:]); err != nil {
-			return 0, fmt.Errorf("%w: %v", ErrCryptoRandFailed, err)
+			return 0, fmt.Errorf("%w: %w", ErrCryptoRandFailed, err)
 		}
-		return int(buf[0]) % max, nil
+		return int(buf[0]) % maxVal, nil
 	}
 
 	// For larger ranges, use 64-bit random value
 	var buf [8]byte
 	if _, err := rand.Read(buf[:]); err != nil {
-		return 0, fmt.Errorf("%w: %v", ErrCryptoRandFailed, err)
+		return 0, fmt.Errorf("%w: %w", ErrCryptoRandFailed, err)
 	}
 
 	n := binary.BigEndian.Uint64(buf[:])
-	return int(n % uint64(max)), nil
+	return int(n % uint64(maxVal)), nil // #nosec G115 - modulo ensures result fits in int range
 }
 
 // SecureRandomBytes fills the provided byte slice with cryptographically secure random bytes.
@@ -59,7 +59,7 @@ func SecureRandomBytes(data []byte) error {
 	}
 
 	if _, err := rand.Read(data); err != nil {
-		return fmt.Errorf("%w: %v", ErrCryptoRandFailed, err)
+		return fmt.Errorf("%w: %w", ErrCryptoRandFailed, err)
 	}
 	return nil
 }
@@ -68,9 +68,9 @@ func SecureRandomBytes(data []byte) error {
 func SecureRandomInt64() (int64, error) {
 	var buf [8]byte
 	if _, err := rand.Read(buf[:]); err != nil {
-		return 0, fmt.Errorf("%w: %v", ErrCryptoRandFailed, err)
+		return 0, fmt.Errorf("%w: %w", ErrCryptoRandFailed, err)
 	}
-	return int64(binary.BigEndian.Uint64(buf[:])), nil
+	return int64(binary.BigEndian.Uint64(buf[:])), nil // #nosec G115 - intentional conversion
 }
 
 // SecureRandomFloat returns a cryptographically secure random float64 in the range [0.0, 1.0).
@@ -80,7 +80,7 @@ func SecureRandomFloat() (float64, error) {
 		return 0, err
 	}
 	// Convert to [0.0, 1.0) by treating as uint64 and dividing by max uint64
-	return float64(uint64(n)) / float64(^uint64(0)), nil
+	return float64(uint64(n)) / float64(^uint64(0)), nil // #nosec G115 - intentional conversion for float normalization
 }
 
 // SecureZero zeroes the provided byte slice in a way that should not be optimized away.
@@ -118,7 +118,7 @@ func (sb *SecureBuffer) Lock() error {
 	}
 
 	if err := unix.Mlock(sb.data); err != nil {
-		return fmt.Errorf("%w: %v", ErrMemoryLockFailed, err)
+		return fmt.Errorf("%w: %w", ErrMemoryLockFailed, err)
 	}
 
 	sb.locked = true
@@ -132,7 +132,7 @@ func (sb *SecureBuffer) Unlock() error {
 	}
 
 	if err := unix.Munlock(sb.data); err != nil {
-		return fmt.Errorf("%w: %v", ErrMemoryUnlockFailed, err)
+		return fmt.Errorf("%w: %w", ErrMemoryUnlockFailed, err)
 	}
 
 	sb.locked = false
@@ -161,7 +161,7 @@ func (sb *SecureBuffer) Destroy() error {
 // LockMemory locks the provided byte slice in memory to prevent swapping
 func LockMemory(data []byte) error {
 	if err := unix.Mlock(data); err != nil {
-		return fmt.Errorf("%w: %v", ErrMemoryLockFailed, err)
+		return fmt.Errorf("%w: %w", ErrMemoryLockFailed, err)
 	}
 	return nil
 }
@@ -169,7 +169,7 @@ func LockMemory(data []byte) error {
 // UnlockMemory unlocks the provided byte slice from memory
 func UnlockMemory(data []byte) error {
 	if err := unix.Munlock(data); err != nil {
-		return fmt.Errorf("%w: %v", ErrMemoryUnlockFailed, err)
+		return fmt.Errorf("%w: %w", ErrMemoryUnlockFailed, err)
 	}
 	return nil
 }

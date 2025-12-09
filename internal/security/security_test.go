@@ -134,7 +134,7 @@ func TestSecureBuffer(t *testing.T) {
 		copy(buf.data, []byte("test password"))
 
 		// Destroy should zero the data
-		buf.Destroy()
+		_ = buf.Destroy() // Ignore error in test cleanup
 
 		// Verify all zeros
 		for i, b := range buf.data {
@@ -145,7 +145,7 @@ func TestSecureBuffer(t *testing.T) {
 	t.Run("lock and unlock", func(t *testing.T) {
 		buf, err := NewSecureBuffer(64)
 		require.NoError(t, err)
-		defer buf.Destroy()
+		defer func() { _ = buf.Destroy() }() // Ignore error in defer
 
 		// Lock memory
 		err = buf.Lock()
@@ -165,7 +165,7 @@ func TestSecureBuffer(t *testing.T) {
 	t.Run("zero", func(t *testing.T) {
 		buf, err := NewSecureBuffer(64)
 		require.NoError(t, err)
-		defer buf.Destroy()
+		defer func() { _ = buf.Destroy() }() // Ignore error in defer
 
 		// Write some data
 		copy(buf.data, []byte("sensitive data"))

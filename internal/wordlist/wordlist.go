@@ -34,8 +34,8 @@ var (
 	ErrSourceNotFound = errors.New("wordlist source not found")
 )
 
-// WordlistSource represents a verified source for wordlist data
-type WordlistSource struct {
+// Source represents a verified source for wordlist data
+type Source struct {
 	ID          string // Unique identifier
 	Name        string // Display name
 	URL         string // HTTPS download URL
@@ -49,7 +49,7 @@ type WordlistSource struct {
 }
 
 // DefaultSources contains verified wordlist sources
-var DefaultSources = []WordlistSource{
+var DefaultSources = []Source{
 	{
 		ID:          "eff-large",
 		Name:        "EFF Large Wordlist",
@@ -90,14 +90,14 @@ var DefaultSources = []WordlistSource{
 
 // Wordlist represents a loaded wordlist
 type Wordlist struct {
-	Source *WordlistSource
+	Source *Source
 	Words  []string
 }
 
 // Manager handles wordlist fetching, caching, and loading
 type Manager struct {
 	cacheDir string
-	sources  []WordlistSource
+	sources  []Source
 	loaded   map[string]*Wordlist
 	client   *http.Client
 	mu       sync.RWMutex
@@ -155,7 +155,7 @@ func (m *Manager) EnsureWordlists(ctx context.Context) error {
 }
 
 // fetchAndCache downloads and caches a wordlist
-func (m *Manager) fetchAndCache(ctx context.Context, source WordlistSource) error {
+func (m *Manager) fetchAndCache(ctx context.Context, source Source) error {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, source.URL, nil)
 	if err != nil {
 		return fmt.Errorf("failed to create request: %w", err)
@@ -206,7 +206,7 @@ func (m *Manager) cachePath(id string) string {
 }
 
 // isValidCache checks if a cached wordlist is valid
-func (m *Manager) isValidCache(path string, source WordlistSource) bool {
+func (m *Manager) isValidCache(path string, _ Source) bool {
 	info, err := os.Stat(path)
 	if err != nil {
 		return false
@@ -247,7 +247,7 @@ func (m *Manager) LoadAll() error {
 			continue // Skip missing wordlists
 		}
 
-		data, err := os.ReadFile(cachePath)
+		data, err := os.ReadFile(cachePath) // #nosec G304 - cachePath is from trusted cache directory
 		if err != nil {
 			return fmt.Errorf("failed to read cache %s: %w", source.ID, err)
 		}
@@ -284,7 +284,7 @@ func (m *Manager) SelectRandomLists(n int) ([]*Wordlist, error) {
 
 // AddUserWordlist adds a user-provided wordlist
 func (m *Manager) AddUserWordlist(path, id string) error {
-	data, err := os.ReadFile(path)
+	data, err := os.ReadFile(path) // #nosec G304 - path comes from CLI flags, user controlled
 	if err != nil {
 		return fmt.Errorf("failed to read wordlist: %w", err)
 	}
@@ -298,7 +298,7 @@ func (m *Manager) AddUserWordlist(path, id string) error {
 	defer m.mu.Unlock()
 
 	m.loaded[id] = &Wordlist{
-		Source: &WordlistSource{
+		Source: &Source{
 			ID:          id,
 			Name:        filepath.Base(path),
 			Description: "User-provided wordlist",
@@ -311,12 +311,12 @@ func (m *Manager) AddUserWordlist(path, id string) error {
 }
 
 // ListSources returns information about all configured sources
-func (m *Manager) ListSources() []WordlistSource {
+func (m *Manager) ListSources() []Source {
 	return slices.Clone(m.sources)
 }
 
 // EnableSource enables or disables a wordlist source
-func (m *Manager) EnableSource(id string, enabled bool) bool {
+func (m *Manager) EnableSource(id string, _ bool) bool {
 	for i := range m.sources {
 		if m.sources[i].ID == id {
 			// Implementation would track enabled/disabled state
@@ -327,7 +327,7 @@ func (m *Manager) EnableSource(id string, enabled bool) bool {
 }
 
 // parseWordlist parses wordlist data into a slice of words
-func parseWordlist(data []byte, sourceID string) []string {
+func parseWordlist(data []byte, _ string) []string {
 	scanner := bufio.NewScanner(bytes.NewReader(data))
 	words := make([]string, 0, 8192)
 
