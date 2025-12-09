@@ -1,0 +1,27 @@
+# Words easily confused when spoken or typed
+one
+won
+two
+to
+too
+for
+four
+fore
+ate
+eight
+oh
+owe
+sea
+see
+bee
+be
+eye
+aye
+i
+you
+ewe
+why
+y
+are
+our
+hour

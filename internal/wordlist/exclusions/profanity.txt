@@ -1,0 +1,5 @@
+# Common profanity (basic list)
+# Add more as needed
+damn
+hell
+crap

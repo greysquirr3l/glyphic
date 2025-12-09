@@ -1,0 +1,2 @@
+# Potentially offensive or sensitive terms
+# Add terms that might be inappropriate in passwords

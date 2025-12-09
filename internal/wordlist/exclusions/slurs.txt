@@ -1,0 +1,2 @@
+# Ethnic, racial, gender slurs
+# This file intentionally minimal for initial development
