@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2025-12-29
+
+### Fixed
+
+- Resolved all 45 golangci-lint issues for production-quality code:
+  * 8 errorlint: Changed `%v` to `%w` for proper error wrapping
+  * 3 errcheck: Added error checking for `buf.Destroy()` calls in tests
+  * 4 gosec: Added `#nosec` directives with justifications for intentional conversions
+  * 14 revive: Added package comments, renamed types to avoid stuttering
+  * 7 thelper: Added `t.Helper()` to test helper closures
+  * 7 wrapcheck: Wrapped external errors with context
+- Renamed `WordlistSource` to `Source` to eliminate package name stuttering
+
+### Changed
+
+- Enhanced quantum resistance documentation in SECURITY.md and README.md
+- Added comprehensive entropy calculations for quantum attack resistance
+- Clarified that glyphic's quantum resistance comes from high entropy, not RNG source
+- Provided quantum-era security recommendations (7+ words for 90+ bits)
+
+### Documentation
+
+- Added quantum attack resistance table showing effective bits against quantum computers
+- Explained why crypto/rand is sufficient (no need for quantum RNG)
+- Created internal QUANTUM_RNG_EVALUATION.md for design decisions
+
 ## [0.1.1] - 2025-12-09
 
 ### Added
@@ -67,6 +93,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - No password persistence or logging
 - HTTPS-only for wordlist downloads
 
-[Unreleased]: https://github.com/greysquirr3l/glyphic/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/greysquirr3l/glyphic/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/greysquirr3l/glyphic/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/greysquirr3l/glyphic/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/greysquirr3l/glyphic/releases/tag/v0.1.0
