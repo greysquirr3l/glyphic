@@ -7,6 +7,8 @@
 [![Go Version](https://img.shields.io/badge/Go-1.25.5-00ADD8?logo=go)](https://go.dev/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Security](https://img.shields.io/badge/Security-crypto%2Frand%20only-green.svg)](#security-first-design)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/greysquirr3l/glyphic/badge)](https://scorecard.dev/viewer/?uri=github.com/greysquirr3l/glyphic)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/9999/badge)](docs/security/OSSF.md)
 
 Generate memorable, cryptographically secure passphrases with beautiful terminal animations.
 

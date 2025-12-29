@@ -1,0 +1,18 @@
+# Code Owners
+# These owners will be the default owners for everything in the repo.
+# They will be requested for review when someone opens a pull request.
+
+# Global owners
+* @greysquirr3l
+
+# Security-sensitive files
+/SECURITY.md @greysquirr3l
+/.github/ @greysquirr3l
+/internal/security/ @greysquirr3l
+
+# CI/CD
+/.github/workflows/ @greysquirr3l
+
+# Documentation
+/docs/ @greysquirr3l
+/*.md @greysquirr3l
