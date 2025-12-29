@@ -236,6 +236,22 @@ For reference:
 - **77 bits**: Secure against quantum computers (Grover's algorithm)
 - **128 bits**: Overkill for most purposes
 
+#### Quantum Attack Resistance
+
+Grover's algorithm (quantum brute-force) provides a quadratic speedup (√N):
+
+|Words|Classical Bits|Quantum Effective Bits|Quantum Resistance|
+|---|---|---|---|
+|6|77.5|38.75|✅ Adequate|
+|7|90.4|45.2|✅ Strong|
+|8|103.3|51.65|✅ Excellent|
+
+**Recommendation**: Use 7+ words (90+ bits) for long-term quantum-era security.
+
+**Note**: glyphic's quantum resistance comes from **high entropy**, not the RNG source. `crypto/rand` (CSPRNG)
+and true quantum RNGs produce passwords with identical brute-force resistance. See [SECURITY.md](SECURITY.md#quantum-resistance)
+for details.
+
 ### Wordlist Security
 
 - **Auto-fetching**: Downloads from verified HTTPS sources (EFF)
@@ -246,15 +262,15 @@ For reference:
 
 ## 🎨 Color Schemes
 
-| Scheme    | Description                     | Colors                        |
-|-----------|---------------------------------|-------------------------------|
-| `matrix`  | Classic green Matrix aesthetic  | Bright green on black         |
-| `cyber`   | Cyberpunk neon blue             | Cyan/blue on black            |
-| `fire`    | Hot fire colors                 | Red/orange/yellow on black    |
-| `vapor`   | Vaporwave aesthetic             | Pink/purple/cyan on black     |
-| `mono`    | Monochrome professional         | Gray/white on black           |
-| `nord`    | Nord color palette (cool)       | Frost blues on polar night    |
-| `gruvbox` | Gruvbox color palette (warm)    | Orange/yellow/green on dark   |
+| Scheme    | Description                    | Colors                     |
+| --------- | ------------------------------ | -------------------------- |
+| `matrix`  | Classic green Matrix aesthetic | Bright green on black      |
+| `cyber`   | Cyberpunk neon blue            | Cyan/blue on black         |
+| `fire`    | Hot fire colors                | Red/orange/yellow on black |
+| `vapor`   | Vaporwave aesthetic            | Pink/purple/cyan on black  |
+| `mono`    | Monochrome professional        | Gray/white on black        |
+| `nord`    | Nord color palette (cool)      | Frost blues on polar night |
+| `gruvbox` | Gruvbox color palette (warm)   | Orange/yellow/green on dark |
 
 ## 📁 File Locations
 

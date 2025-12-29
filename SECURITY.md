@@ -50,6 +50,38 @@ When using glyphic:
 - **PRNG**: Uses `crypto/rand` exclusively
 - **Validation**: PRNG validated on startup
 - **No Fallbacks**: Never falls back to insecure randomness
+- **Quantum Resistant**: High-entropy passwords resist quantum attacks (see below)
+
+### Quantum Resistance
+
+glyphic generates **quantum-resistant passwords** through high entropy:
+
+**Entropy Calculation:**
+- 6-word password from 7776-word EFF list: **77.5 bits of entropy**
+- Formula: log₂(7776^6) = 77.5 bits
+- Brute-force attempts: **2^77.5 ≈ 2.28 × 10^23** combinations
+
+**Quantum Attack Resistance:**
+- Grover's algorithm (quantum brute-force): √N speedup
+- Effective bits against quantum: 77.5 / 2 = **38.75 bits**
+- Still requires **2^38.75 ≈ 285 billion** quantum operations
+- **Recommendation**: Use 7+ words (91+ bits) for quantum-era security
+
+**Why crypto/rand is Sufficient:**
+- CSPRNG (Cryptographically Secure Pseudo-Random Number Generator)
+- Entropy comes from password **length**, not RNG source
+- True quantum RNG (Qiskit, etc.) provides **no practical advantage**
+- Both produce passwords with identical brute-force resistance
+
+**Best Practices for Quantum Era:**
+
+```bash
+# Quantum-resistant configuration (91+ bits)
+glyphic --words 7 --capitalize first --numbers
+
+# Maximum security (103+ bits)
+glyphic --words 8 --capitalize first --numbers --special
+```
 
 ### Memory Security
 

@@ -41,3 +41,4 @@ build/
 
 # Serena
 .serena/
+docs/dev/QUANTUM_RNG_EVALUATION.md
